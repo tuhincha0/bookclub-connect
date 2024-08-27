@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Container, Row, Col } from 'reactstrap';
-import BookCard from './components/BookCard';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './components/Home';
+import BookList from './components/BookList';
+import BookDetail from './components/BookDetail';
+import BookClub from './components/BookClub';
+import UserProfile from './components/UserProfile';
+import Trade from './components/Trade';
 
 function App() {
-  const [books, setBooks] = useState([]);
-
-  useEffect(() => {
-    axios.get('http://localhost:5000/books')
-      .then(response => setBooks(response.data))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
-
   return (
-    <Container>
-      <Row>
-        {books.map(book => (
-          <Col key={book.id} md="4">
-            <BookCard book={book} />
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <Router>
+      <Header />
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <Route path="/books" exact component={BookList} />
+        <Route path="/books/:id" component={BookDetail} />
+        <Route path="/bookclubs" component={BookClub} />
+        <Route path="/profile" component={UserProfile} />
+        <Route path="/trade" component={Trade} />
+      </Switch>
+      <Footer />
+    </Router>
   );
 }
 
